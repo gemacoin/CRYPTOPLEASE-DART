@@ -1,0 +1,26 @@
+name: dart-gemachain-lib
+
+packages:
+  - 'packages/**'
+
+scripts:
+  check_master:
+    run: |
+      melos run get \
+      && melos run format \
+      && melos run analyze \
+      && melos run test --no-select
+
+  get: melos exec -- dart pub get
+
+  build: melos exec -- dart pub run build_runner build --delete-conflicting-outputs
+
+  format: melos exec -- dart format --set-exit-if-changed -o none .
+
+  analyze: melos exec -- dart analyze --fatal-infos .
+
+  test: 
+    run: melos exec -- dart pub run test
+    select-package:
+      dir-exists:
+        - test
